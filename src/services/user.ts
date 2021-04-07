@@ -21,3 +21,13 @@ export const login = (data: User) => {
     data: qs.stringify(data) // axios 默认发送的是application/json格式的数据
   })
 }
+// eslint-disable-next-line
+export const getUserInfo = () => {
+  return request({
+    method: 'GET',
+    url: '/front/user/getInfo'
+    // headers: {
+    //   Authorization: store.state.user.access_token
+    // }
+  })
+}
