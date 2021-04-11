@@ -1,5 +1,5 @@
 /**
- * 用户相关请求模块
+ * 菜单管理相关请求模块
  */
 /* eslint-disable */
 import request from '@/utils/request'
