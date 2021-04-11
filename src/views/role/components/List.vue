@@ -25,7 +25,9 @@
         </el-table-column>
         <el-table-column label="操作" width="150px" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="text">分配菜单</el-button>
+            <el-button size="mini" type="text"
+              @click="$router.push({name:'alloc-menu',params:{roleId:scope.row.id}})">分配菜单
+            </el-button>
             <el-button size="mini" type="text">分配资源</el-button>
             <el-button size="mini" type="text" @click="handleEdit(scope.row)">编辑</el-button>
             <el-button size="mini" type="text" @click="handleDelete(scope.row)">删除
