@@ -31,6 +31,7 @@ export const getUserInfo = () => {
     // }
   })
 }
+// eslint-disable-next-line
 export const getUserPages = (data: any) => {
   return request({
     method: 'POST',
@@ -38,6 +39,7 @@ export const getUserPages = (data: any) => {
     data
   })
 }
+// eslint-disable-next-line
 export const forbidUser = (userId: string | number) => {
   return request({
     method: 'POST',

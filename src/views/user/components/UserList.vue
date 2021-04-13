@@ -73,6 +73,7 @@ export default Vue.extend({
         shortcuts: [
           {
             text: '最近一周',
+            // eslint-disable-next-line
             onClick (picker: any) {
               const end = new Date()
               const start = new Date()
@@ -82,6 +83,7 @@ export default Vue.extend({
           },
           {
             text: '最近一个月',
+            // eslint-disable-next-line
             onClick (picker: any) {
               const end = new Date()
               const start = new Date()
@@ -91,6 +93,7 @@ export default Vue.extend({
           },
           {
             text: '最近三个月',
+            // eslint-disable-next-line
             onClick (picker: any) {
               const end = new Date()
               const start = new Date()
@@ -165,6 +168,7 @@ export default Vue.extend({
       this.form.currentPage = 1
       this.loadUserLists()
     },
+    // eslint-disable-next-line
     async handleSelectRole (role: any) {
       this.currentUser = role
       // 加载角色列表
@@ -173,13 +177,15 @@ export default Vue.extend({
       // eslint-disable-next-line
       const {
         data: { data: userRoles }
+        // eslint-disable-next-line
       } = await getUserRoles((this.currentUser as any).id)
+      // eslint-disable-next-line
       this.roleList = userRoles.map((item: any) => item.id)
       // 展示对话框
       this.dialogVisible = true
     },
     async handleAllRole () {
-      const { data } = await allocateUserRoles({
+      await allocateUserRoles({
         // eslint-disable-next-line
         userId: (this.currentUser as any).id,
         roleList: this.roleList
