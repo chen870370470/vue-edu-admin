@@ -25,3 +25,12 @@ export const saveOrUpdateCourse = (data: any) => {
       data
     })
 }
+export const uploadCourseUpload = (data: any) => {
+  // 该接口要求的请求数据类型是：multipart/form-data
+  // 所以需要提交FormData 数据对象
+  return request({
+    method: 'POST',
+    url: '/boss/course/upload',
+    data
+  })
+}
