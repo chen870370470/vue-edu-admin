@@ -1,6 +1,8 @@
 <template>
   <div class="course-image">
-    <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
+    <el-progress :status="percentage === 100 ? 'success' : undefined" v-if="isUploading" type="circle"
+      :percentage="percentage" :width="178" />
+    <el-upload v-else class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
       :show-file-list="false" :before-upload="beforeAvatarUpload" :http-request="handleUpload">
       <img v-if="value" :src="value" class="avatar">
       <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -22,6 +24,12 @@ export default Vue.extend({
       default: 2
     }
   },
+  data () {
+    return {
+      isUploading: false,
+      percentage: 0
+    }
+  },
   methods: {
     // eslint-disable-next-line
     beforeAvatarUpload(file: any) {
@@ -36,10 +44,16 @@ export default Vue.extend({
       }
       return isJPG && isLt2M
     },
-    async handleUpload (options: any) {
+    // eslint-disable-next-line
+    async handleUpload(options: any) {
+      this.isUploading = true
       const fd = new FormData()
       fd.append('file', options.file)
-      const { data } = await uploadCourseUpload(fd)
+      const { data } = await uploadCourseUpload(fd, (e) => {
+        this.percentage = Math.floor((e.loaded / e.total) * 100)
+      })
+      this.isUploading = false
+      this.percentage = 0
       this.$emit('input', data.data.name)
     }
   }
