@@ -36,3 +36,12 @@ export const uploadCourseUpload = (data: any, onUploadProgress?: (progressEvent:
     onUploadProgress
   });
 };
+export const getCourseById = (courseId: string | number) => {
+  return request({
+    method: "GET",
+    url: "/boss/course/getCourseById",
+    params:{
+      courseId
+    }
+  });
+};

@@ -17,7 +17,8 @@
             <el-button type="primary" @click="onSubmit" :disabled="isLoading">查询</el-button>
             <el-button @click="onReset" :disabled="isLoading">重置</el-button>
           </el-form-item>
-          <el-button type="primary" size="default" style="float:right;" @click="$router.push({name:'create-course'})">
+          <el-button type="primary" size="default" style="float:right;"
+            @click="$router.push({name:'create-course'})">
             <i class="el-icon-plus"></i>
             添加课程
           </el-button>
@@ -40,9 +41,10 @@
           </template>
         </el-table-column>
         <el-table-column prop="address" label="操作" width="200" align="center">
-          <template>
-            <el-button>编辑</el-button>
-            <el-button>内容管理</el-button>
+          <template slot-scope="scope">
+            <el-button @click="$router.push({name:'edit-course',params:{courseId:scope.row.id}})">编辑
+            </el-button>
+            <el-button @click="$router.push({name:'section-course',params:{courseId:scope.row.id}})">内容管理</el-button>
           </template>
         </el-table-column>
       </el-table>

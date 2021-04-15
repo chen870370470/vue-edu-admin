@@ -26,10 +26,6 @@ export default Vue.extend({
       editor.config.onchange = (newHtml: string) => {
         this.$emit('input', newHtml)
       }
-      editor.create()
-      // 注意：设置初始值必须在create之后
-      editor.txt.html(this.value)
-
       editor.config.customUploadImg = async function (
         // eslint-disable-next-line
         resultFiles: any,
@@ -45,6 +41,9 @@ export default Vue.extend({
         // insertImgFn(imgUrl)
         insertImgFn(data.data.name)
       }
+      editor.create()
+      // 注意：设置初始值必须在create之后
+      editor.txt.html(this.value)
     }
   }
 })
