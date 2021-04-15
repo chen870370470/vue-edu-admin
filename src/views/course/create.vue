@@ -58,27 +58,27 @@
             </el-upload> -->
           </el-form-item>
           <el-form-item label="解锁封面" size="normal">
-            <course-image v-model="courseForm.courseImgUrl"/>
+            <course-image v-model="courseForm.courseImgUrl" />
           </el-form-item>
         </div>
         <div v-show="activeStep === 2">
-          <el-form-item label="销售信息" size="normal">
-            <el-input v-model="courseForm.courseName" placeholder="" size="normal">
+          <el-form-item label="售卖价格" size="normal">
+            <el-input v-model="courseForm.discounts" placeholder="" size="normal">
               <template slot="append">元</template>
             </el-input>
           </el-form-item>
           <el-form-item label="商品原价" size="normal">
-            <el-input v-model="courseForm.courseName" placeholder="" size="normal">
+            <el-input v-model="courseForm.price" placeholder="" size="normal">
               <template slot="append">元</template>
             </el-input>
           </el-form-item>
           <el-form-item label="销量" size="normal">
-            <el-input v-model="courseForm.courseName" placeholder="" size="normal">
+            <el-input v-model="courseForm.sales" placeholder="" size="normal">
               <template slot="append">单</template>
             </el-input>
           </el-form-item>
           <el-form-item label="活动标签" size="normal">
-            <el-input v-model="courseForm.courseName" placeholder="" size="normal">
+            <el-input v-model="courseForm.discountsTag" placeholder="" size="normal">
             </el-input>
           </el-form-item>
 
@@ -90,20 +90,22 @@
           </el-form-item>
           <template v-if="isSeckill">
             <el-form-item label="开始时间" size="normal">
-              <el-date-picker v-model="courseForm.courseName" type="datetime" placeholder="选择日期时间">
+              <el-date-picker v-model="courseForm.activityCourseDTO.beginTime" type="date"
+                placeholder="选择日期时间">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="结束时间" size="normal">
-              <el-date-picker v-model="courseForm.courseName" type="datetime" placeholder="选择日期时间">
+              <el-date-picker v-model="courseForm.activityCourseDTO.endTime" type="date"
+                placeholder="选择日期时间">
               </el-date-picker>
             </el-form-item>
             <el-form-item label="秒杀价" size="normal">
-              <el-input v-model="courseForm.courseName" placeholder="" size="normal">
+              <el-input v-model="courseForm.activityCourseDTO.amount" placeholder="" size="normal">
                 <template slot="append">元</template>
               </el-input>
             </el-form-item>
             <el-form-item label="秒杀库存" size="normal">
-              <el-input v-model="courseForm.courseName" placeholder="" size="normal">
+              <el-input v-model="courseForm.activityCourseDTO.stock" placeholder="" size="normal">
                 <template slot="append">个</template>
               </el-input>
             </el-form-item>
@@ -112,11 +114,16 @@
         </div>
         <div v-show="activeStep === 4">
           <el-form-item label="课程详情" size="normal">
-            <el-input v-model="courseForm.courseName" type="textarea"></el-input>
+            <el-input v-model="courseForm.courseDescriptionMarkDown" type="textarea"></el-input>
+          </el-form-item>
+          <el-form-item label="是否发布" size="normal">
+            <el-switch v-model="courseForm.status" :active-value="1" :inactive-value="0"
+              active-color="#13ce66" inactive-color="#ff4949">
+            </el-switch>
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary">保存</el-button>
+            <el-button type="primary" @click="handleSave" :disabled="isLoadingSave">保存</el-button>
           </el-form-item>
         </div>
         <el-form-item v-if="activeStep >= 0 && activeStep < 4">
@@ -147,14 +154,15 @@ export default Vue.extend({
         { title: '秒杀活动', icon: 'el-icon-edit' },
         { title: '课程详情', icon: 'el-icon-edit' }
       ],
+      isLoadingSave: false,
       imageUrl: '', // 预览图片地址
       isSeckill: false, // 是否开启秒杀
       courseForm: {
-        id: 0,
+        // id: 0,
         courseName: '',
         brief: '',
         teacherDTO: {
-          id: 0,
+          // id: 0,
           courseId: 0,
           teacherName: '',
           teacherHeadPicUrl: '',
@@ -173,12 +181,12 @@ export default Vue.extend({
         sortNum: 0,
         previewFirstField: '',
         previewSecondField: '',
-        status: 0,
+        status: 0, // 0：未发布 // 1：已发布
         sales: 0,
         activityCourse: true,
         activityCourseDTO: {
-          id: 0,
-          courseId: 0,
+          // id: 0,
+          // courseId: 0,
           beginTime: '',
           endTime: '',
           amount: 0,
@@ -188,7 +196,21 @@ export default Vue.extend({
       }
     }
   },
-  methods: {}
+  methods: {
+    async handleSave () {
+      this.isLoadingSave = true
+      const { data } = await saveOrUpdateCourse(this.courseForm)
+      if (data.code === '-1') {
+        this.$message.error(`${data.mesg},请联系管理员`)
+      } else {
+        this.$message.success('发布成功')
+        this.$router.back()
+        this.isLoadingSave = false
+      }
+      this.isLoadingSave = false
+      console.log(data)
+    }
+  }
 })
 </script>
 
