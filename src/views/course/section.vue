@@ -3,7 +3,7 @@
     <el-card>
       <div class="card-header" slot="header">
         {{course.courseName}}
-        <el-button type="primary">
+        <el-button type="primary" @click="handleShowAddSection">
           添加阶段
         </el-button>
       </div>
@@ -25,13 +25,42 @@
         </div>
       </el-tree>
     </el-card>
+
+    <!-- 添加阶段 -->
+    <el-dialog title="" :visible.sync="isAddSectionShow">
+      <el-form :model="section" ref="section-form" label-width="70px">
+        <el-form-item label="课程名称">
+          <el-input :value="course.courseName" auto-complete="off" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="章节名称">
+          <el-input v-model="section.sectionName"></el-input>
+        </el-form-item>
+        <el-form-item label="章节描述">
+          <el-input v-model="section.description"></el-input>
+        </el-form-item>
+        <el-form-item label="章节排序">
+          <el-input-number v-model="section.orderNum"></el-input-number>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer">
+        <el-button @click="isAddSectionShow = false">取消</el-button>
+        <el-button type="primary" @click="handleAddSection">确定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { getSectionAndLesson } from '@/services/course-section'
+import {
+  getSectionAndLesson,
+  saveOrUpdateSection
+} from '@/services/course-section'
 import { getCourseById } from '@/services/course'
+import { Form } from 'node_modules/element-ui/types'
+
 export default Vue.extend({
   name: 'CourseSection',
   props: {
@@ -41,8 +70,18 @@ export default Vue.extend({
     }
   },
   data () {
+    const section = {
+      courseId: this.courseId,
+      sectionName: '',
+      description: '',
+      orderNum: 0,
+      status: 0
+    }
     return {
       sections: [],
+      section,
+      isAddSectionShow: false,
+      isAddLessonShow: false,
       course: {},
       defaultProps: {
         children: 'lessonDTOS',
@@ -65,6 +104,24 @@ export default Vue.extend({
     async loadCourse () {
       const { data } = await getCourseById(this.courseId)
       this.course = data.data
+    },
+    async handleAddSection () {
+      await saveOrUpdateSection(this.section)
+      this.loadSections()
+      this.isAddSectionShow = false
+      ;(this.$refs['section-form'] as Form).resetFields()
+      this.$message.success('操作成功')
+    },
+
+    handleShowAddSection () {
+      this.section = {
+        courseId: this.courseId,
+        sectionName: '',
+        description: '',
+        orderNum: 0,
+        status: 0
+      }
+      this.isAddSectionShow = true
     }
   }
 })
