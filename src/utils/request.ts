@@ -41,6 +41,7 @@ request.interceptors.request.use(function (config) {
   // Do something with request error
   return Promise.reject(error)
 })
+
 // 响应拦截器
 let isRefreshing = false // 控制刷新token的状态
 // eslint-disable-next-line
