@@ -25,7 +25,9 @@
           <!-- lesson -->
           <span v-else class="actions">
             <el-button @click.stop="handleEditLessonShow(data,node.parent.data)">编辑</el-button>
-            <el-button type="success">上传视频</el-button>
+            <el-button type="success"
+              @click="$router.push({name:'course-video',params:{courseId}})">上传视频
+            </el-button>
             <el-select class="select-status" v-model="data.status" placeholder="请选择"
               @change="handleLessonStatusChange(data)">
               <el-option label="已隐藏" :value="0"></el-option>
